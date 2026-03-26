@@ -67,7 +67,6 @@ XSCANNER_UPDATE_SIGNATURES()
     # Header
     echo "SHA256|NAME|FAMILY|PLATFORM" > "$TEMP_DB"
 
-    # FIX 2: URL theZoo diganti ke yang valid (index file yang benar-benar exist)
     echo "[*] Downloading Windows malware signatures..."
     curl -s --connect-timeout 15 \
         "https://raw.githubusercontent.com/nicowillis/theZoo-Hashes/master/theZooHashes.txt" \
@@ -88,7 +87,6 @@ XSCANNER_UPDATE_SIGNATURES()
     fi
     echo "[✓] Windows: $WIN_COUNT signatures"
 
-    # FIX 4: URL Android diganti ke repo yang valid
     echo "[*] Downloading Android malware signatures..."
     curl -s --connect-timeout 15 \
         "https://raw.githubusercontent.com/ashishb/android-malware/master/malware_hashes.txt" \
@@ -101,21 +99,20 @@ XSCANNER_UPDATE_SIGNATURES()
     fi
     echo "[✓] Android: $AND_COUNT signatures"
 
-    # Linux signatures - Neo23x0 signature-base (URL ini valid)
     echo "[*] Downloading Linux malware signatures..."
     curl -s --connect-timeout 15 \
         "https://raw.githubusercontent.com/Neo23x0/signature-base/master/iocs/sha256-apt-iocs.txt" \
         -o "$TEMP_DIR/linux.txt" 2>/dev/null
     LIN_COUNT=0
     if [ -f "$TEMP_DIR/linux.txt" ] && [ -s "$TEMP_DIR/linux.txt" ]; then
-        # File ini format: sha256 # comment
+        
         grep -E '^[a-fA-F0-9]{64}' "$TEMP_DIR/linux.txt" | head -3000 | \
         awk '{print $1 "|LinuxMalware|Linux|LINUX"}' >> "$TEMP_DB"
         LIN_COUNT=$(grep -c "LINUX" "$TEMP_DB" 2>/dev/null || echo 0)
     fi
     echo "[✓] Linux: $LIN_COUNT signatures"
 
-    # Cobalt Strike
+
     echo "[*] Downloading Cobalt Strike signatures..."
     curl -s --connect-timeout 15 \
         "https://raw.githubusercontent.com/Sentinel-One/CobaltStrikeParser/master/hashes.txt" \
@@ -128,8 +125,7 @@ XSCANNER_UPDATE_SIGNATURES()
     fi
     echo "[✓] Cobalt Strike: $CS_COUNT signatures"
 
-    # FIX 5: Hanya simpan EICAR SHA256, hapus EICAR MD5 dari database SHA256
-    # MD5 (32 char) di database SHA256 bisa false positive sebagai substring
+    
     echo "275a021bbfb6489e54d471899f7db9d1663fc695ec2fe2a2c4538aabf651fd0f|EICAR-Test|Test|CROSSPLATFORM" >> "$TEMP_DB"
 
     mv "$TEMP_DB" "$DATABASE_FILE"
