@@ -2,7 +2,7 @@
 
 XScanner adalah tools scanner malware yang dirancang untuk Termux (Android), Linux, WSL, dan macOS. Menggunakan database signature real-time dari GitHub untuk mendeteksi malware berdasarkan hash SHA256.
 
-![XScanner Preview](https://i.ibb.co/VYRY463t/Screenshot-20260326-084813.png)
+![XScanner Preview](./Screenshot_20260326-084813.jpg)
 
 ---
 
