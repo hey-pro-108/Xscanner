@@ -101,7 +101,7 @@ XSCANNER_UPDATE_SIGNATURES()
 
     echo "[*] Downloading Linux malware signatures..."
     curl -s --connect-timeout 15 \
-        "https://urlhaus.abuse.ch/downloads/text/" \
+        "https://bazaar.abuse.ch/export/txt/sha256/recent/" \
         -o "$TEMP_DIR/linux.txt" 2>/dev/null
     LIN_COUNT=0
     if [ -f "$TEMP_DIR/linux.txt" ] && [ -s "$TEMP_DIR/linux.txt" ]; then
@@ -115,7 +115,7 @@ XSCANNER_UPDATE_SIGNATURES()
 
     echo "[*] Downloading Cobalt Strike signatures..."
     curl -s --connect-timeout 15 \
-        "https://raw.githubusercontent.com/Sentinel-One/CobaltStrikeParser/master/hashes.txt" \
+        "" \
         -o "$TEMP_DIR/cobalt.txt" 2>/dev/null
     CS_COUNT=0
     if [ -f "$TEMP_DIR/cobalt.txt" ] && [ -s "$TEMP_DIR/cobalt.txt" ]; then
