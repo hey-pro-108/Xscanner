@@ -1,6 +1,5 @@
 #!/usr/bin/env bash
 
-# FIX 1: Shebang diganti ke /usr/bin/env bash supaya works di Linux, WSL, macOS, bukan cuma Termux
 
 XSCANNER_BANNER()
 {
