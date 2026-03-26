@@ -101,7 +101,7 @@ XSCANNER_UPDATE_SIGNATURES()
 
     echo "[*] Downloading Linux malware signatures..."
     curl -s --connect-timeout 15 \
-        "https://raw.githubusercontent.com/Neo23x0/signature-base/master/iocs/sha256-apt-iocs.txt" \
+        "https://urlhaus.abuse.ch/downloads/text/" \
         -o "$TEMP_DIR/linux.txt" 2>/dev/null
     LIN_COUNT=0
     if [ -f "$TEMP_DIR/linux.txt" ] && [ -s "$TEMP_DIR/linux.txt" ]; then
