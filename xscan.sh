@@ -69,11 +69,11 @@ XSCANNER_UPDATE_SIGNATURES()
 
     echo "[*] Downloading Windows malware signatures..."
     curl -s --connect-timeout 15 \
-        "https://raw.githubusercontent.com/nicowillis/theZoo-Hashes/master/theZooHashes.txt" \
+        "https://raw.githubusercontent.com/romainmarcoux/malicious-hash/main/full-hash-sha256-aa.txt" \
         -o "$TEMP_DIR/win.txt" 2>/dev/null
     WIN_COUNT=0
     if [ -f "$TEMP_DIR/win.txt" ] && [ -s "$TEMP_DIR/win.txt" ]; then
-        # FIX 3: Pakai temp file sementara, bukan subshell langsung append ke TEMP_DB
+        
         grep -E '^[a-fA-F0-9]{64}' "$TEMP_DIR/win.txt" | head -10000 | \
         awk -F',' '{
             hash=$1
@@ -89,7 +89,7 @@ XSCANNER_UPDATE_SIGNATURES()
 
     echo "[*] Downloading Android malware signatures..."
     curl -s --connect-timeout 15 \
-        "https://raw.githubusercontent.com/ashishb/android-malware/master/malware_hashes.txt" \
+        "https://bazaar.abuse.ch/export/txt/sha256/recent/" \
         -o "$TEMP_DIR/android.txt" 2>/dev/null
     AND_COUNT=0
     if [ -f "$TEMP_DIR/android.txt" ] && [ -s "$TEMP_DIR/android.txt" ]; then
@@ -159,8 +159,7 @@ XSCANNER_SCAN_FILE()
     FILE_HASH=$(sha256sum "$file" 2>/dev/null | cut -d' ' -f1)
     [ -z "$FILE_HASH" ] && return
 
-    # FIX 6: Grep pakai -F (fixed string) dan match di awal baris + delimiter
-    # Supaya nggak false positive dari substring match
+    
     result=$(grep -F "${FILE_HASH}|" "$db" 2>/dev/null | head -1)
 
     if [ -n "$result" ]; then
@@ -196,7 +195,7 @@ XSCANNER_FAST_SCAN()
     PLATFORM=$(cat "$TEMP_DIR/platform.tmp" 2>/dev/null)
 
     if [ -f "$TARGET" ]; then
-        # Single file scan
+        
         TOTAL=1
         echo -n "[*] Scanning: $(basename "$TARGET") ... "
         RESULT=$(XSCANNER_SCAN_FILE "$TARGET")
@@ -210,7 +209,7 @@ XSCANNER_FAST_SCAN()
             echo "CLEAN"
         fi
     else
-        # Directory scan
+        
         echo -n "[*] Fast scanning"
 
         IFS=',' read -ra EXTS <<< "$SUSPECT_EXTS"
